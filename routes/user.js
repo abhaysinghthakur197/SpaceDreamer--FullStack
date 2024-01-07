@@ -1,7 +1,12 @@
 const { Router } = require('express')
 const router = Router();
 
+// Adding uuid for user i.e user unique id
+const {v4: uuidv4} = require('uuid')
+
 const User = require('../models/user');
+
+const {setUser} = require('../service/auth')
 
 router.post("/signup", async (req, res) => {
     console.log(req.body)
@@ -29,7 +34,13 @@ router.post("/signin", async (req, res) => {
         console.log("user", user)
 
         if (user) {
-            // User found, handle authentication logic here
+            const sessionId = uuidv4();
+            console.log(sessionId)
+            // set user uuid
+            setUser(sessionId,user)
+
+            res.cookie("uid",sessionId)
+             // User found, handle authentication logic here
             res.json({ message: "Signin successful", user });
         } else {
             // User not found
