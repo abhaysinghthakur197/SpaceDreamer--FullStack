@@ -21,7 +21,7 @@ const MyNavbar = () => {
       <Navbar.Brand href="#home" className='mx-5' style={{ fontWeight: 'bold', fontSize:'1.5rem' }}> Space<span className='text-danger text-bold' >Dreamer</span></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav">
         <img
-          src=".././public/menu-iconpng" // Assuming you have an image named menu-icon.png in the public folder
+          src={process.env.PUBLIC_URL + './menu-icon.png'}
           alt="Menu"
           style={{ width: '30px', height: '30px' }}
         />
