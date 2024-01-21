@@ -3,7 +3,7 @@ import { Container, Row, Col, Button} from 'react-bootstrap'
 
 const Welcome = () => {
     return (
-        <div className='welcome bg-black text-light'>
+        <div className='welcome text-light'>
             <Container className='py-5 vh-110 vh-md-75 vh-lg-50'>
                 <Row className='my-5 align-items-center'>
                     <Col md={6} className=' my-5 py-5text-center'>

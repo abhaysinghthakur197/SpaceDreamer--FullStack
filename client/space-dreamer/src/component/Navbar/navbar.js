@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Button } from 'react-bootstrap';
+import {Link} from 'react-router-dom'
 import './Navbar.css'
 
 const MyNavbar = () => {
@@ -18,7 +19,7 @@ const MyNavbar = () => {
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand href="#home" className='mx-5' style={{ fontWeight: 'bold', fontSize:'1.5rem' }}> Space<span className='text-danger text-bold' >Dreamer</span></Navbar.Brand>
+      <Navbar.Brand href="#home" className='mx-5' style={{ fontWeight: 'bold', fontSize: '1.5rem' }}> Space<span className='text-danger text-bold' >Dreamer</span></Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav">
         <img
           src={process.env.PUBLIC_URL + './menu-icon.png'}
@@ -27,16 +28,19 @@ const MyNavbar = () => {
         />
       </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav" className='justify-content-between mx-5'>
-        <Nav className="mx-auto" > 
+        <Nav className="mx-auto" >
           <Nav.Item>
-            <Nav.Link href="#home" className='text-white' style={{fontSize: '1rem'}}>Home</Nav.Link>
+            <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/">Home</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="#about" className='text-white' style={{fontSize: '1rem'}}>About</Nav.Link>
+            <Nav.Link  className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/news">News</Nav.Link>
           </Nav.Item>
-          <Nav.Item><Nav.Link href="#services" className='text-white' style={{fontSize: '1rem'}}>Services</Nav.Link></Nav.Item>
           <Nav.Item>
-            <Nav.Link href="#contact" className='text-white' style={{fontSize: '1rem'}}>Contact</Nav.Link>
+            <Nav.Link className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/addnews">Add News</Nav.Link>
+
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/contact">Contact</Nav.Link>
           </Nav.Item>
         </Nav>
         <Nav>
@@ -45,8 +49,8 @@ const MyNavbar = () => {
           ) : (
             <Button variant="outline-light" onClick={handleLogin}>Login</Button>
           )} */}
-          <Button variant='outline-light' className='mx-1 my-1'>Log In</Button>
-          <Button variant='outline-light' className='mx-1 my-1'>Log Out</Button>
+          <Button variant='outline-light' className='mx-1 my-1' as={Link}  to="/Signin">Log In</Button>
+          <Button variant='outline-light' className='mx-1 my-1' as={Link}  to="/Signup">Sign Up</Button>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
