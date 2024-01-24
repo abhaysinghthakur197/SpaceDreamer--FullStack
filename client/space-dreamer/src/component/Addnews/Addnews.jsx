@@ -6,7 +6,6 @@ import Articleform from './Articleform/Articleform';
 
 const Addnews = () => {
     return (
-
         <Container>
             <div>
                 <div>
