@@ -10,7 +10,7 @@ const { setUser } = require('../service/auth')
 
 router.post("/signup", async (req, res) => {
     console.log(req.body)
-    const { username, email, password } = req.body;
+    const {email, password, username } = req.body;
     console.log("ready for post")
     try {
         await User.create({
@@ -20,9 +20,9 @@ router.post("/signup", async (req, res) => {
         })
     } catch (error) {
         console.log(error)
-        res.json(error)
+        res.status(404).json(error)
     }
-    res.json("signup done")
+    res.status(200).json({ message: 'Signup successful'});
 
 })
 
