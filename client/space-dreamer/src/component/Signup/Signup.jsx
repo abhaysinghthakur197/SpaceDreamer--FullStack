@@ -1,94 +1,175 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card, Form, Button, Container } from 'react-bootstrap';
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
+import { useFormik } from 'formik'
+import { signUpSchema } from '../schemas';
+
+import axios from 'axios';
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        imageUrl: '',
-        title: '',
-        description: '',
-    });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Form submitted:', formData);
-    };
 
+    // Style
     const sectionStyle = {
         backgroundImage: `url(${process.env.PUBLIC_URL}/SignupGif.gif)`, // Replace with your image URL
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: 'white', // Set text color to be readable against the background
         padding: '100px 0', // Adjust padding as needed
-      };
+    };
+
+    const navigate = useNavigate();
+
+
+    const formData = {
+        username: '',
+        email: '',
+        password: '',
+    };
+
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    //     setFormData({
+    //         ...formData,
+    //         [name]: value,
+    //     });    
+    // };
+
+
+
+
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
+        initialValues: formData,
+        validationSchema: signUpSchema,
+        onSubmit: async (values, action) => {
+            console.log("form values", values);
+            try {
+                const response = await axios.post('http://localhost:8080/api/user/signup', values)
+                // method: 'POST',
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                // body: JSON.stringify({
+                //     username: values.username,
+                //     email: values.email,
+                //     password: values.password,
+                // }),
+                // });
+
+                // const data = response.json();
+                console.log("response", response); // Log the response from the server
+                if(response.status === 200){
+                    alert("Congrats! You are now a *Space Dreamer*")
+                    navigate('/Signin')
+                }
+            } catch (error) {
+                console.error('Error during signup:', error);
+            }
+            action.resetForm();
+        },
+    });
+
+    // console.log("formik data",formik);
+
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log('FormData:', formData);
+
+    //         try {
+    //             const response = await fetch('http://localhost:8080/api/user/signup', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json',
+    //                 },
+    //                 body: JSON.stringify({
+    //                     username: formData.username,
+    //                     email: formData.email,
+    //                     password: formData.password,
+    //                 }),
+    //             });
+
+    //             const data = await response.json();
+    //             console.log(data); // Log the response from the server
+    //         } catch (error) {
+    //             console.error('Error during signup:', error);
+    //         }   
+    // }
+
     return (
-        
-            <Container style={sectionStyle}>
-                <div className='d-flex align-items-center justify-content-center vh-100'>
-                    <Card style={{ width: '38rem', background: 'transparent', border: 'none', }} bg="black">
-                        <Card.Body>
-                            <Card.Title className='text-center text-white text-decoration-underline' style={{ fontWeight: 'bolder', fontFamily: 'Helvetica, Arial, sans-serif', color: '#834651', fontSize: '2.6rem' }}>Sign <span className='text-warning'>Up</span></Card.Title>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group controlId="formImageUrl" className='my-4' >
-                                    <Form.Label className='text-white'>Name:</Form.Label>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter your name"
-                                        name="name"
-                                        class="form-control bg-secondary"
-                                        id="name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group controlId="formTitle" className='my-4'>
-                                    <Form.Label className='text-white'>Email:</Form.Label>
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="Enter email"
-                                        name="email"
-                                        class="form-control bg-secondary"
-                                        id="eamil"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                    />
-                                </Form.Group>
-                                <Form.Group controlId="formDescription" className='my-4'>
-                                    <Form.Label className='text-white'>Password:</Form.Label>
-                                    <Form.Control
-                                        type="password"
+        <Container style={sectionStyle}>
+            <div className='d-flex align-items-center justify-content-center vh-100'>
+                <Card style={{ width: '38rem', background: 'transparent', border: 'none', }} bg="black">
+                    <Card.Body>
+                        <Card.Title className='text-center text-white text-decoration-underline' style={{ fontWeight: 'bolder', fontFamily: 'Helvetica, Arial, sans-serif', color: '#834651', fontSize: '2.6rem' }}>Sign <span className='text-warning'>Up</span></Card.Title>
+                        <Form onSubmit={handleSubmit}>
+                            <Form.Group controlId="formUsername" className='my-4' >
+                                <Form.Label className='text-white'>Username:</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    name="username"
+                                    className="form-control bg-secondary"
+                                    // id="username"
+                                    value={values.username}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {touched.username && errors.username ? (
+                                    <p className="form-error text-danger">{errors.username}</p>
+                                ) : null}
 
-                                        placeholder="Enter password"
-                                        name="password"
-                                        id="password"
-                                        class="form-control bg-secondary"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                    />
-                                </Form.Group>
-                                <div className='d-flex  align-items-center justify-content-center '>
-                                    <Button variant="outline-light" type="submit" className='mx-3' as={Link}  to="/Signin">
-                                        Log In
-                                    </Button>
-                                    <Button variant="outline-light" type="submit" as={Link}  to="/Signup">
-                                        Sign up
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-                </div>
-            </Container>
-       
+                            </Form.Group>
+                            <Form.Group controlId="formEmail" className='my-4'>
+                                <Form.Label className='text-white'>Email:</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="email"
+                                    placeholder="Enter email"
+                                    name="email"
+                                    className="form-control bg-secondary"
+                                    // id="eamil"
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {touched.email && errors.email ? (
+                                    <p className="form-error text-danger">{errors.email}</p>
+                                ) : null}
+                            </Form.Group>
+                            <Form.Group controlId="formPassword" className='my-4'>
+                                <Form.Label className='text-white'>Password:</Form.Label>
+                                <Form.Control
+                                    required
+                                    type="password"
+                                    placeholder="Enter password"
+                                    name="password"
+                                    // id="password"
+                                    className="form-control bg-secondary"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur} />
+                                {touched.password && errors.password ? (
+                                    <p className="form-error text-danger">{errors.password}</p>
+                                ) : null}
+                            </Form.Group>
+                            <div className=' d-flex align-items-center justify-content-center '>
 
+                                <Button variant="outline-light" type="submit">
+                                    Sign up
+                                </Button>
+                            </div>
+                            <p className='text-white text-center mt-3'>Already a Space Dreamer ?
+                            <Link variant="outline-light" type="cancel" className='px-2 text-warning' as={Link} to="/Signin">
+                            Log In
+                            </Link>
+                            </p>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            </div>
+        </Container>
     )
 }
 
