@@ -3,7 +3,7 @@ import { Card, Form, Button, Container } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom'
 
 import { useFormik } from 'formik'
-import { signUpSchema } from '../schemas';
+import { signUpSchema } from '../schemas/SignupSchema';
 
 import axios from 'axios';
 
@@ -28,17 +28,6 @@ const Login = () => {
         email: '',
         password: '',
     };
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData({
-    //         ...formData,
-    //         [name]: value,
-    //     });    
-    // };
-
-
-
 
     const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
         initialValues: formData,
@@ -74,29 +63,6 @@ const Login = () => {
     // console.log("formik data",formik);
 
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log('FormData:', formData);
-
-    //         try {
-    //             const response = await fetch('http://localhost:8080/api/user/signup', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({
-    //                     username: formData.username,
-    //                     email: formData.email,
-    //                     password: formData.password,
-    //                 }),
-    //             });
-
-    //             const data = await response.json();
-    //             console.log(data); // Log the response from the server
-    //         } catch (error) {
-    //             console.error('Error during signup:', error);
-    //         }   
-    // }
 
     return (
         <Container style={sectionStyle}>
