@@ -21,7 +21,7 @@ connectToMongoDB("mongodb://127.0.0.1:27017/SpaceDreamer-app").then(() => consol
 
 // middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // app.use("/api", (req,res) => {
