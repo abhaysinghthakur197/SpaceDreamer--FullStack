@@ -1,21 +1,48 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Nav, Button } from 'react-bootstrap';
-import {Link} from 'react-router-dom'
+import { Navbar, Nav, Button, NavDropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 import './Navbar.css'
 
+import { useAuth } from '../auth/AuthContext';
+import axios from 'axios';
+
 const MyNavbar = () => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  // const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = () => {
-    // Implement your login logic here
-    setLoggedIn(true);
-  };
 
-  const handleLogout = () => {
-    // Implement your logout logic here
-    setLoggedIn(false);
+
+  const { username } = useAuth();
+
+  // useEffect(() => {
+  //   const uidCookieValue = getCookie("uid");
+  //   console.log(uidCookieValue)
+  //   if (uidCookieValue) {
+  //     setLoggedIn(true)
+  //   }
+  // }, [])
+
+  const handleLogout = async (username) => {
+    try {
+     const response =  await axios.get('http://localhost:8080/api/user/logout')
+    }
+    catch (error) {
+      console.log(error)
+    }
+
   }
+
+  // function getCookie(name) {
+  //   const cookies = document.cookie.split('; ');
+  //   for (let i = 0; i < cookies.length; i++) {
+  //     const [cookieName, cookieValue] = cookies[i].split('=');
+  //     if (cookieName === name) {
+  //       return cookieValue;
+  //     }
+  //   }
+  //   return null; // Return null if cookie with specified name is not found
+  // }
+  console.log(username)
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -33,24 +60,39 @@ const MyNavbar = () => {
             <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/">Home</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link  className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/news">News</Nav.Link>
+            <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/news">News</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/addnews">Add News</Nav.Link>
+            <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/contact">Contact</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            {username ? (
+              <div>
+                <NavDropdown title={username} className="text-white nav-dropdown-hover " style={{ fontSize: '1rem' }} id="nav-dropdown">
+                  <NavDropdown.Item eventKey="option-1" className='bg-dark'>
+                    <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/addnews">Add news</Nav.Link>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item eventKey="option-2" className='bg-dark'>
+                    <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/">Edit news</Nav.Link>
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </div>)
+              : (
+                null
+              )}
 
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link className='text-white' style={{ fontSize: '1rem' }}  as={Link}  to="/contact">Contact</Nav.Link>
           </Nav.Item>
         </Nav>
         <Nav>
-          {/* {isLoggedIn ? (
-            <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
+          {username ? (
+            <Button variant="outline-light" className='mx-1 my-1' onClick={handleLogout}>Logout</Button>
           ) : (
-            <Button variant="outline-light" onClick={handleLogin}>Login</Button>
-          )} */}
-          <Button variant='outline-light' className='mx-1 my-1' as={Link}  to="/Signin">Log In</Button>
-          <Button variant='outline-light' className='mx-1 my-1' as={Link}  to="/Signup">Sign Up</Button>
+            <>
+              <Button variant='outline-light' className='mx-1 my-1' as={Link} to="/Signin">Log In</Button>
+              <Button variant='outline-light' className='mx-1 my-1' as={Link} to="/Signup">Sign Up</Button>
+            </>
+          )}
+
         </Nav>
       </Navbar.Collapse>
     </Navbar>
