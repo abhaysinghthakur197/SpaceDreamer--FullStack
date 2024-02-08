@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card, Form, Button } from 'react-bootstrap';
 import { articleSchema } from '../../schemas/AddarticleSchema'
+import { useNavigate } from 'react-router-dom'
 
 // formik
-import { Field, useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 import axios from 'axios';
 
 const Articleform = () => {
+
+
+
+    const navigate = useNavigate();
+
     const formData = {
         coverImage: null,
         title: '',
@@ -18,30 +24,27 @@ const Articleform = () => {
         console.log("Values file", values);
 
         try {
-
             const formData = new FormData();
             formData.append('coverImage', values.coverImage);
             formData.append('title', values.title);
             formData.append('body', values.body);
 
-            const response = await axios.post('http://localhost:8080/api/article/addnews', values, {
-                withcredentials: true, headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
+            const response = await axios.post('http://localhost:8080/api/article/addnews', formData, {
+                withcredentials: true
             },);
             console.log("response from server", response);
-            // if(response.status === 200){
-            //     alert("Your login successful!!!");
-            //     // navigate("/home")
-            // }
-            // console.log('Cookies:', document.cookie);
+            if (response.status === 200) {
+                alert("Article is uploaded succesfully");
+                navigate('/')
+            }
+
         } catch (error) {
-            // if(error.response.status === 401){
-            //     alert("Invalid email or password!, Please try again")   
-            // }
             console.log("error during login", error);
         }
         // action.resetForm();
+    }
+
+    const handleCancel = (e) => {
 
     }
 
@@ -55,39 +58,27 @@ const Articleform = () => {
         const fileInput = e.target;
         const file = fileInput.files.length > 0 ? fileInput.files[0] : null;
 
-        const fileName = file ? file.name : null;
+        // const fileName = file ? file.name : null;
 
-        formik.setFieldValue('coverImage', fileName);
+        formik.setFieldValue('coverImage', file);
     };
 
-
-    // const { values,errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-    //     initialValues: formData,
-    //     validationSchema: articleSchema,
-    //     onSubmit: async (values) => {
-    //         console.log("Add news values", values);
+    // useEffect(() => {
+    //     const fetchUser = async () => {
     //         try {
-    //             const response  = await axios.post('http://localhost:8080/api/article/addnews', values, { withcredentials: true });
-    //             console.log("response from server", response);
-    //             // if(response.status === 200){
-    //             //     alert("Your login successful!!!");
-    //             //     // navigate("/home")
-    //             // }
-    //             // console.log('Cookies:', document.cookie);
-    //         } catch (error) {
-    //             // if(error.response.status === 401){
-    //             //     alert("Invalid email or password!, Please try again")   
-    //             // }
-    //             console.log("error during login",error);
+    //             const response = await axios.get('http://localhost:8080/api/article/addnews')
+    //             console.log("user response" , response)
+    //         } catch (err) {
+    //             console.log("this is err", err)
     //         }
-    //         // action.resetForm();
-    //     }
-    // })
+    //     };
+    //     fetchUser();
+    // }, [])
     return (
         <Card style={{ width: '38rem' }} bg="dark">
             <Card.Body>
                 <Card.Title className='text-center text-white' style={{ fontWeight: 'bolder', fontFamily: 'Helvetica, Arial, sans-serif', color: '#834651' }}>Add Article</Card.Title>
-                <Form onSubmit={formik.handleSubmit} encType="multipart/form-data">
+                <Form onSubmit={formik.handleSubmit} encType='multipart/form-data'>
                     <Form.Group controlId="formFile" className='my-4' >
                         <Form.Label className='text-white'>Image</Form.Label>
                         <Form.Control
@@ -140,7 +131,7 @@ const Articleform = () => {
                         <Button variant="outline-light" type="submit" className='mx-3'>
                             Submit
                         </Button>
-                        <Button variant="outline-light" type="submit">
+                        <Button variant="outline-light" type="reset" onChange={handleCancel}>
                             Cancel
                         </Button>
                     </div>
