@@ -14,6 +14,12 @@ const MyNavbar = () => {
 
   const { username } = useAuth();
 
+  const [isToggled, setIsToggled] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsToggled(!isToggled);
+  }
+
   // useEffect(() => {
   //   const uidCookieValue = getCookie("uid");
   //   console.log(uidCookieValue)
@@ -45,13 +51,21 @@ const MyNavbar = () => {
   console.log(username)
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
-      <Navbar.Brand href="#home" className='mx-5' style={{ fontWeight: 'bold', fontSize: '1.5rem' }}> Space<span className='text-danger text-bold' >Dreamer</span></Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav">
+    <Navbar expand="lg" fixed="top">
+      {/* <Navbar.Brand href="#home" className='mx-5' style={{ fontWeight: 'bold', fontSize: '1.5rem' }}> Space<span className='text-danger text-bold' >Dreamer</span></Navbar.Brand> */}
+      <Navbar.Brand href='#' className='mx-5'><img
+            src={process.env.PUBLIC_URL + './Logo.png'} // Use the imported logo
+            width="100"
+            height="50"
+            className="d-inline-block align-top"
+            alt="Space Dreamer"
+          /></Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={toggleNavbar}>
         <img
           src={process.env.PUBLIC_URL + './menu-icon.png'}
           alt="Menu"
           style={{ width: '30px', height: '30px' }}
+          className={isToggled ? 'd-inline-block align-top rotated' : 'd-inline-block align-top'}
         />
       </Navbar.Toggle>
       <Navbar.Collapse id="basic-navbar-nav" className='justify-content-between mx-5'>
@@ -65,10 +79,10 @@ const MyNavbar = () => {
           <Nav.Item>
             <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/contact">Contact</Nav.Link>
           </Nav.Item>
-          <Nav.Item>
+          <Nav.Item className='text-white'>
             {username ? (
               <div>
-                <NavDropdown title={username} className="text-white nav-dropdown-hover " style={{ fontSize: '1rem' }} id="nav-dropdown">
+                <NavDropdown title={username}  id="nav-dropdown" style={{ fontSize: '1rem' }} >
                   <NavDropdown.Item eventKey="option-1" className='bg-dark'>
                     <Nav.Link className='text-white' style={{ fontSize: '1rem' }} as={Link} to="/addnews">Add news</Nav.Link>
                   </NavDropdown.Item>
