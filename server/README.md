@@ -6,4 +6,4 @@
 
 `This contain all service`
 
-`This contain mongodb connect`
+`This contain mongodb connect logic`
