@@ -28,8 +28,6 @@ app.use(cors({ origin: true, credentials: true }));
 connectToMongoDB("mongodb://127.0.0.1:27017/SpaceDreamer-app").then(() => console.log("Db connected")).catch((e) => console.log(e));
 
 // middleware
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -40,15 +38,12 @@ console.log(__dirname)
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/articleCoverImage', express.static(path.join(__dirname, 'public', 'articleCoverImage')));
 // app.use(express.static(path.resolve("./public")));
-// for image rending in user card4
 
-//    **** //
 
 app.get("/api", async (req, res) => {
         const allArticle = await Articles.find({})
         // const allUsers = await Users.find({})
         // const allData = {allArticle, allUsers}
-    // console.log("server is ready")
     res.status(200).json(allArticle)
 })
 

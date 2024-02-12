@@ -8,6 +8,14 @@ const User = require('../models/user');
 
 const { setUser } = require('../service/auth')
 
+
+router.get("/logout", async(req,res) => {
+    // console.log(req.body);
+    res.clearCookie("uid");
+    res.json({message: 'cleared uid'})
+    
+})
+
 router.post("/signup", async (req, res) => {
     console.log(req.body)
     const {email, password, username } = req.body;
@@ -38,24 +46,14 @@ router.post("/signin", async (req, res) => {
             console.log("userSessionid",sessionId)
             // set user uuid
             setUser(sessionId, user)
-            res.cookie("uid", sessionId)
-            // User found, handle authentication logic here
-            res.json({ message: "Signin successful", user });
-        } else {
-            // User not found
-            res.status(401).json({ message: "Invalid email or password" });
-        }
+            res.cookie("uid",sessionId)
+            return res.status(200).json({ message: "Signin successful", user });
+        }  
     } catch (error) {
         console.log(error)
-        res.status(500).json({ message: "Internal server error" });
+        res.status(401).json({ message: "Invalid email or password" });
     }
 
 })
-
-
-
-
-
-
 
 module.exports = router;

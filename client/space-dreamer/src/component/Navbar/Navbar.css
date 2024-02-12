@@ -1,7 +1,0 @@
-/* MyNavbar.css */
-
-/* Style for the hovered Nav.Link with underline in red */
-.nav-item:active{
-    text-decoration: underline red;
-  }
-  

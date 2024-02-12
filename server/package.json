@@ -2,10 +2,11 @@
   "name": "spacedreamer---fullstack",
   "version": "1.0.0",
   "description": "\"Full Stack MERN Project",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "npm i"
   },
   "author": "Abhay Thakur",
   "license": "MIT",
