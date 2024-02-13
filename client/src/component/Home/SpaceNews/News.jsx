@@ -9,6 +9,8 @@ import '../../../../src/index.css'
 const Spaceapi = () => {
 
     const [news, setNews] = useState([]);
+    const [showLogo, setShowLogo] = useState(true);
+
 
     useEffect(() => {
         async function getNews() {
@@ -22,6 +24,12 @@ const Spaceapi = () => {
             }
         }
         getNews()
+
+        const timer = setTimeout(() => {
+            setShowLogo(false);
+        }, 3100);
+
+        return () => clearTimeout(timer); 
     }, []);
 
     return (
@@ -30,8 +38,11 @@ const Spaceapi = () => {
                 <h2 className='text-center text-white font-family-Helvetica, Arial, sans-serif py-2 my-2'>SP<span className='text-danger'>A</span>CE <span>News Box</span></h2>
                 <p className="text-center text-white">Top 10 space industry news of the day is here for you, Check OUT! </p>
             </div>
-            {news.length === 0 ? (<img className="Loading_img" src={process.env.PUBLIC_URL + './Logo.png'} alt="Loading" />) : (<SpaceCard news={news} />)}
-
+            {/* {news.length === 0 ? (<img className="Loading_img" src={process.env.PUBLIC_URL + './Logo.png'} alt="Loading" />) : (<SpaceCard news={news} />)} */}
+            
+            {showLogo && <img className="Loading_img" src={process.env.PUBLIC_URL + './Logo.png'} alt="Loading" />}
+            {!showLogo && news.length === 0 && <h4 className="text-white text-center">No articles found</h4>}
+            {!showLogo && news.length > 0 && <SpaceCard news={news} />}
         </div>
     )
 }
