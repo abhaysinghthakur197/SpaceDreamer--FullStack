@@ -20,7 +20,7 @@ const articleRoute = require('./routes/article')
 const cors = require('cors')
 
 const app = express();
-const PORT = 8080
+const PORT = process.evn.PORT || 8000;
 
 app.use(cors({ origin: true, credentials: true }));
 
@@ -49,6 +49,8 @@ app.get("/api", async (req, res) => {
 
 app.use("/api/user", userRoute)
 app.use("/api/article", articleRoute)
+
+
 
 app.listen(PORT, () => {
     console.log(`server is running on ${PORT}`)
